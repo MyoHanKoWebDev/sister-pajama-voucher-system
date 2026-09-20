@@ -45,5 +45,8 @@ RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/s/AllowOverride None/Allow
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Dynamically bind Apache port for Render
-CMD sed -i "s/80/${PORT:-80}/g" /etc/apache2/ports.conf /etc/apache2/sites-available/*.conf && apache2-foreground
+# Run migrations, seeders, and start Apache with Render dynamic port binding
+CMD sed -i "s/80/${PORT:-80}/g" /etc/apache2/ports.conf /etc/apache2/sites-available/*.conf \
+    && php artisan migrate --force \
+    && php artisan db:seed --force \
+    && apache2-foreground
