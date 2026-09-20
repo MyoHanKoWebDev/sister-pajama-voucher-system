@@ -1,9 +1,21 @@
+<IfModule mod_headers.c>
+    # Allow requests from your production React frontend
+    Header set Access-Control-Allow-Origin "https://sister-pajama-voucher-system-1.onrender.com"
+    Header set Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With, Accept, Origin, Application"
+    Header set Access-Control-Allow-Credentials "true"
+</IfModule>
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
 
     RewriteEngine On
+
+    # Handle OPTIONS preflight requests immediately before route matching
+    RewriteCond %{REQUEST_METHOD} OPTIONS
+    RewriteRule ^(.*)$ - [R=200,L]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
