@@ -21,6 +21,7 @@ return [
     'allowed_origins' => [
         'https://sister-pajama-voucher-system-1.onrender.com',
         'http://localhost:5173',
+        'http://localhost:3000',
     ],
 
     'allowed_origins_patterns' => [],

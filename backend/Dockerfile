@@ -45,9 +45,7 @@ RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/s/AllowOverride None/Allow
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Clear cached config, run migrations & seeders, then start Apache
 CMD sed -i "s/80/${PORT:-80}/g" /etc/apache2/ports.conf /etc/apache2/sites-available/*.conf \
     && php artisan config:clear \
-    && php artisan migrate --force \
-    && php artisan db:seed --force \
+    && php artisan cache:clear \
     && apache2-foreground
